@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Carousel } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
 import { articles } from "../data/articles";

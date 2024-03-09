@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, MobileNav, Typography, Button, IconButton } from "@material-tailwind/react";
+import { Navbar, MobileNav, Typography, IconButton } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
 import { Link, useLocation } from "react-router-dom";
 import "./NavBar.css";
