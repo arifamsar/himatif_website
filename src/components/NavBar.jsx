@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, MobileNav, Typography, Button, IconButton } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
 import { Link, useLocation } from "react-router-dom";
+import "./NavBar.css";
 
 export default function NavBar() {
   const [openNav, setOpenNav] = React.useState(false);
@@ -13,22 +14,28 @@ export default function NavBar() {
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography as="li" variant="small" color="blue-gray" className="relative">
-        <Link to="/" className="flex items-center p-1 font-normal hover:text-blue-gray-700">
-          Home
-          <span className="absolute bottom-0 left-0 w-full h-1 bg-transparent transition-all duration-300 ease-in-out transform origin-bottom hover:bg-green-800"></span>
+      <Typography as="li" color="blue-gray" className="relative">
+        <Link
+          to="/"
+          className={`flex items-center p-1 font-normal text-sm hover:text-opacity-85 hover:text-green-700 ${location.pathname === "/" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""}`}
+        >
+          <span class="link link-underline link-underline-black">Home</span>
         </Link>
       </Typography>
-      <Typography as="li" variant="small" color="blue-gray" className="relative">
-        <Link to="/profile" className="flex items-center p-1 font-normal hover:text-blue-gray-700">
-          Profile
-          <span className="absolute bottom-0 left-0 w-full h-1 bg-transparent transition-all duration-300 ease-in-out transform origin-bottom hover:bg-green-800"></span>
+      <Typography as="li" color="blue-gray" className="relative">
+        <Link
+          to="/profile"
+          className={`flex items-center p-1 font-normal text-sm hover:text-opacity-85 hover:text-green-700 ${location.pathname === "/profile" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""}`}
+        >
+          <span class="link link-underline link-underline-black">Profile</span>
         </Link>
       </Typography>
-      <Typography as="li" variant="small" color="blue-gray" className="relative">
-        <Link to="/member" className="flex items-center p-1 font-normal hover:text-blue-gray-700">
-          Member
-          <span className="absolute bottom-0 left-0 w-full h-1 bg-transparent transition-all duration-300 ease-in-out transform origin-bottom hover:bg-green-800"></span>
+      <Typography as="li" color="blue-gray" className="relative">
+        <Link
+          to="/member"
+          className={`flex items-center p-1 font-normal text-sm hover:text-opacity-85 hover:text-green-700 ${location.pathname === "/member" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""}`}
+        >
+          <span class="link link-underline link-underline-black">Member</span>
         </Link>
       </Typography>
     </ul>
