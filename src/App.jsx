@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Button } from "@material-tailwind/react";
 import NavBar from "./components/NavBar";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
@@ -13,8 +11,8 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Member />} />
-        <Route path="/member" element={<Profile />} />
+        <Route path="/member" element={<Member />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </>
