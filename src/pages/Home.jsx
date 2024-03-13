@@ -8,11 +8,15 @@ import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 6;
+  const articlesPerPage = 3;
+
+  const sortedArticles = articles.sort((a, b) => {
+    return new Date(b.dateAdded) - new Date(a.dateAdded);
+  });
 
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
+  const currentArticles = sortedArticles.slice(indexOfFirstArticle, indexOfLastArticle);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);

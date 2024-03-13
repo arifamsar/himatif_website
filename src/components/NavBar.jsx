@@ -34,12 +34,12 @@ export default function NavBar() {
       </Typography>
       <Typography as="li" color="blue-gray" className="relative">
         <Link
-          to="/member"
+          to="/article"
           className={`flex items-center p-1 font-semibold text-base hover:text-opacity-85 hover:text-green-700 ${
-            location.pathname === "/member" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
+            location.pathname === "/article" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
           }`}
         >
-          <span className="link link-underline link-underline-black">Member</span>
+          <span className="link link-underline link-underline-black">Article</span>
         </Link>
       </Typography>
     </ul>
@@ -47,7 +47,7 @@ export default function NavBar() {
 
   return (
     <>
-      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+      <Navbar className="navbar sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between text-blue-gray-900 lg:px-20">
           <div className="flex items-center gap-4">
             <img src={logo} alt="Logo" className="h-8" />
