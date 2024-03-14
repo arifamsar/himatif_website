@@ -22,13 +22,38 @@ const Article = () => {
     setSearchTerm(inputValue);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 9;
+
+  const totalPages = Math.ceil(articles.length / articlesPerPage);
+
   const sortedArticles = articles.sort((a, b) => {
     return new Date(b.dateAdded) - new Date(a.dateAdded);
   });
 
-  const filteredArticles = sortedArticles.filter((article) => {
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = sortedArticles.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const filteredArticles = currentArticles.filter((article) => {
     return article.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  const renderPaginationButtons = () => {
+    return (
+      <div className="flex justify-center my-5">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <Button key={index + 1} size="sm" color={currentPage === index + 1 ? "green" : "blue-gray"} onClick={() => handlePageChange(index + 1)}>
+            {index + 1}
+          </Button>
+        ))}
+      </div>
+    );
+  };
 
   const listArticles = filteredArticles.map((article) => {
     const date = new Date(article.dateAdded);
@@ -61,7 +86,7 @@ const Article = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container px-4 py-8 mx-20">
         <Typography tag="h1" color="green" className="text-3xl font-bold mb-4 text-center">
           Article Page
         </Typography>
@@ -82,6 +107,7 @@ const Article = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{listArticles}</div>
+        {renderPaginationButtons()}
       </div>
     </>
   );

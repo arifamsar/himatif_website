@@ -35,7 +35,7 @@ const Home = () => {
             <img src={coreteams.avatar} alt={coreteams.name} className="w-10 h-10 rounded-full" />
             <div className="ml-4">
               <h3 className="text-xl font-bold text-primary">{coreteams.name}</h3>
-              <p className="text-blue-gray-500">{coreteams.divisionName}</p>
+              <p className="text-blue-gray-500">{coreteams.position}</p>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ const Home = () => {
             <h1 className="text-3xl font-extrabold text-center text-primary">HIMATIF UIR</h1>
             <p className="text-center text-blue-gray-500 font-bold">
               Himpunan Mahasiswa Teknik Informatika Universitas Islam Riau merupakan tempat bagi mahasiswa Teknik Informatika Universitas Islam Riau untuk berkarya, berinovasi serta mengabdi sebagai kewajiban seorang mahasiswa. Adapun dalam
-              kepengurusan, HIMATIF dibagi menjadi 7 Divisi, yaitu: Kaderisasi, Humas, Kominfo, Ristek, Dispora, Kewirausahaan dan Kerohanian.
+              kepengurusan, HIMATIF dibagi menjadi 7 Dinas, yaitu: Kaderisasi, Humas, Kominfo, Ristek, Dispora, Kewirausahaan dan Kerohanian.
             </p>
           </div>
         </div>
@@ -128,11 +128,11 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Divisions */}
+        {/* Dinas */}
         <div className="container mx-auto lg:px-36 px-5">
           <div className="py-12">
-            <h2 className="text-2xl font-bold text-primary">Divisi Himatif</h2>
-            <p className="text-blue-gray-500">Divisi yang ada di himatif</p>
+            <h2 className="text-2xl font-bold text-primary">Dinas Himatif</h2>
+            <p className="text-blue-gray-500">Dinas yang ada di himatif</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">{listdivisions}</div>
           </div>
         </div>
