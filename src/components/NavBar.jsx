@@ -36,7 +36,7 @@ export default function NavBar() {
         <Link
           to="/article"
           className={`flex items-center p-1 font-semibold text-base hover:text-opacity-85 hover:text-green-700 ${
-            location.pathname === "/article" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
+            location.pathname.startsWith("/article") ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
           }`}
         >
           <span className="link link-underline link-underline-black">Article</span>
