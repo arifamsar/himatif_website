@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, MobileNav, Typography, IconButton } from "@material-tailwind/react";
+import { Navbar, MobileNav, Typography, IconButton, Button } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
 import { Link, useLocation } from "react-router-dom";
 import "./NavBar.css";
@@ -52,11 +52,16 @@ export default function NavBar() {
           <div className="flex items-center gap-4">
             <img src={logo} alt="Logo" className="h-8" />
             <Link to="/" className="mr-4 cursor-pointer py-0 font-semibold text-primary text-sm">
-              HIMATIF <br /> UIR
+              HIMATIF <br /> Universitas Islam Riau
             </Link>
           </div>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
+            <div className="flex items-center gap-x-1">
+              <Button color="green" buttonType="filled" size="regular" ripple="light" className="hidden lg:block">
+                Login
+              </Button>
+            </div>
             <IconButton variant="text" className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden" ripple={false} onClick={() => setOpenNav(!openNav)}>
               {openNav ? (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -70,7 +75,14 @@ export default function NavBar() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>{navList}</MobileNav>
+        <MobileNav open={openNav}>
+          {navList}
+          <div className="flex items-center gap-x-1">
+            <Button fullWidth variant="gradient" size="sm" className="" color="green" buttonType="filled">
+              <span>Sign in</span>
+            </Button>
+          </div>
+          </MobileNav>
       </Navbar>
     </>
   );
