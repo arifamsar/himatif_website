@@ -139,19 +139,21 @@ const Home = () => {
       </div>
 
       {/* Article */}
-      <div className="container mx-auto lg:px-36 px-5">
-        <div className="py-12">
-          <h2 className="text-2xl font-bold text-primary">Berita</h2>
-          <p className="text-blue-gray-500">Temukan berita terbaru seputar HIMATIF UIR di sini!</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">{listArticles}</div>
+      <div className="h-max max-w-full py-10 bg-green-50">
+        <div className="container mx-auto lg:px-36 px-5 ">
+          <div className="py-12">
+            <h2 className="text-2xl font-bold text-primary">Berita</h2>
+            <p className="text-blue-gray-500">Temukan berita terbaru seputar HIMATIF UIR di sini!</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">{listArticles}</div>
+          </div>
         </div>
-      </div>
 
-      {/* Read full on article page */}
-      <div className="flex justify-center mt-8">
-        <Button color="green">
-          <a href="/article">Read full article</a>
-        </Button>
+        {/* Read full on article page */}
+        <div className="flex justify-center mt-8">
+          <Button color="green">
+            <a href="/article">Read full article</a>
+          </Button>
+        </div>
       </div>
     </>
   );
