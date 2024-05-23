@@ -45,9 +45,10 @@ const Article = () => {
 
   const renderPaginationButtons = () => {
     return (
-      <div className="flex justify-center my-5">
+      <div className="flex justify-center items-center mt-8">
         {Array.from({ length: totalPages }, (_, index) => (
-          <Button key={index + 1} size="sm" color={currentPage === index + 1 ? "green" : "blue-gray"} onClick={() => handlePageChange(index + 1)}>
+          <Button key={index + 1} color="green" onClick={() => handlePageChange(index + 1)}
+          className={`px-3 py-2 mr-2 rounded-lg hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${currentPage === index + 1 ? "bg-gray-200 text-primary" : ""}`}>
             {index + 1}
           </Button>
         ))}

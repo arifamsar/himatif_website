@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Carousel } from "@material-tailwind/react";
+import { Button, Carousel } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
 import { articles } from "../data/articles";
 import { coreteams } from "../data/coreteams";
@@ -147,17 +147,11 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center mt-8">
-        {pageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            className={`px-3 py-2 mr-2 rounded-lg text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${currentPage === pageNumber ? "bg-gray-200 text-primary" : ""}`}
-            onClick={() => handlePageChange(pageNumber)}
-          >
-            {pageNumber}
-          </button>
-        ))}
+      {/* Read full on article page */}
+      <div className="flex justify-center mt-8">
+        <Button color="green">
+          <a href="/article">Read full article</a>
+        </Button>
       </div>
     </>
   );
