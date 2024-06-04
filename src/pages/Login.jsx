@@ -1,25 +1,37 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../App';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const newErrors = {};
 
-    if(!username) {
+    if (!username) {
       newErrors.username = 'Username is required!';
     }
 
-    if(!password) {
+    if (!password) {
       newErrors.password = 'Password is required!';
     }
 
-    if(Object.keys(newErrors).length > 0) {
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
+    }
+
+    // Assuming a simple authentication check for demonstration purposes
+    if (username === 'admin' && password === 'admin') {
+      login();
+      navigate('/admin');
+    } else {
+      setErrors({ login: 'Invalid username or password!' });
     }
   };
 
@@ -42,7 +54,6 @@ function Login() {
                 id="username"
                 name="username"
                 type="text"
-                required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Username"
                 value={username}
@@ -58,18 +69,17 @@ function Login() {
                 id="password"
                 name="password"
                 type="password"
-                required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-                {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+              {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
             </div>
           </div>
-
+          {errors.login && <p className="text-red-500 text-xs italic">{errors.login}</p>}
           <div>
-            <button
+            <button 
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
