@@ -18,29 +18,39 @@ export default function NavBar() {
       <Typography as="li" color="blue-gray" className="relative">
         <Link
           to="/"
-          className={`flex items-center p-1 font-semibold text-base hover:text-opacity-85 hover:text-green-700 ${location.pathname === "/" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""}`}
+          className={`flex items-center p-1 font-semibold lg:text-base text-sm hover:text-opacity-85 hover:text-green-700 ${location.pathname === "/" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""}`}
         >
-          <span className="link link-underline link-underline-black">Home</span>
+          <span className="link link-underline link-underline-black">Beranda</span>
         </Link>
       </Typography>
       <Typography as="li" color="blue-gray" className="relative">
         <Link
           to="/profile"
-          className={`flex items-center p-1 font-semibold text-base hover:text-opacity-85 hover:text-green-700 ${
+          className={`flex items-center p-1 font-semibold lg:text-base text-sm hover:text-opacity-85 hover:text-green-700 ${
             location.pathname === "/profile" ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
           }`}
         >
-          <span className="link link-underline link-underline-black">Profile</span>
+          <span className="link link-underline link-underline-black">Profil</span>
         </Link>
       </Typography>
       <Typography as="li" color="blue-gray" className="relative">
         <Link
           to="/article"
-          className={`flex items-center p-1 font-semibold text-base hover:text-opacity-85 hover:text-green-700 ${
+          className={`flex items-center p-1 font-semibold lg:text-base text-sm hover:text-opacity-85 hover:text-green-700 ${
             location.pathname.startsWith("/article") ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
           }`}
         >
-          <span className="link link-underline link-underline-black">Article</span>
+          <span className="link link-underline link-underline-black">Artikel</span>
+        </Link>
+      </Typography>
+      <Typography as="li" color="blue-gray" className="relative">
+        <Link
+          to="/"
+          className={`flex items-center p-1 font-semibold lg:text-base text-sm hover:text-opacity-85 hover:text-green-700 ${
+            location.pathname.startsWith("/article") ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
+          }`}
+        >
+          <span className="link link-underline link-underline-black">Galeri</span>
         </Link>
       </Typography>
     </ul>
