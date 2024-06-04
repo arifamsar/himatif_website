@@ -151,7 +151,7 @@ const Home = () => {
         {/* Read full on article page */}
         <div className="flex justify-center mt-8">
           <Button color="green">
-            <a href="/article">Read full article</a>
+            <a href="/article">Baca artikel selengkapnya</a>
           </Button>
         </div>
       </div>
