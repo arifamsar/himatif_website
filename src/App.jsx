@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import DetailArticle from "./pages/DetailArticle";
 import Admin from "./pages/Admin";
+import Gallery from "./pages/Gallery";
 import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
@@ -32,6 +33,7 @@ function App() {
         <Route path="/article/:id" element={<DetailArticle />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
         <Route path="/admin" element={isAuthenticated ? <Admin /> : <Navigate to="/login" />} />
+        <Route path="/gallery" element={<Gallery />} />
       </Routes>
       <Footer />
     </AuthContext.Provider>

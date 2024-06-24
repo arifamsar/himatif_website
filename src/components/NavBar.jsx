@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, MobileNav, Typography, IconButton, Button } from "@material-tailwind/react";
+import { Navbar, MobileNav, Typography, IconButton } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
 import { Link, useLocation } from "react-router-dom";
 import "./NavBar.css";
@@ -45,9 +45,9 @@ export default function NavBar() {
       </Typography>
       <Typography as="li" color="blue-gray" className="relative">
         <Link
-          to="/"
+          to="/gallery"
           className={`flex items-center p-1 font-semibold lg:text-base text-sm hover:text-opacity-85 hover:text-green-700 ${
-            location.pathname.startsWith("/article") ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
+            location.pathname.startsWith("/gallery") ? "text-green-800 underline decoration-[3px] underline-offset-[3px] decoration-green-800" : ""
           }`}
         >
           <span className="link link-underline link-underline-black">Galeri</span>
