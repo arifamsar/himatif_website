@@ -5,8 +5,6 @@ import { articles } from "../data/articles";
 import { coreteams } from "../data/coreteams";
 import { divisions } from "../data/divisions";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css"; // Import Swiper styles
 import "swiper/css/navigation";
