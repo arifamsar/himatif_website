@@ -7,7 +7,7 @@ import { divisions } from "../data/divisions";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const Home = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const articlesPerPage = 3;
 
   const sortedArticles = articles.sort((a, b) => {
@@ -17,10 +17,6 @@ const Home = () => {
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = sortedArticles.slice(indexOfFirstArticle, indexOfLastArticle);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(articles.length / articlesPerPage); i++) {
