@@ -47,8 +47,12 @@ const Article = () => {
     return (
       <div className="flex justify-center items-center mt-8">
         {Array.from({ length: totalPages }, (_, index) => (
-          <Button key={index + 1} color="green" onClick={() => handlePageChange(index + 1)}
-          className={`px-3 py-2 mr-2 rounded-lg hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${currentPage === index + 1 ? "bg-gray-200 text-primary" : ""}`}>
+          <Button
+            key={index + 1}
+            color="green"
+            onClick={() => handlePageChange(index + 1)}
+            className={`px-3 py-2 mr-2 rounded-lg hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${currentPage === index + 1 ? "bg-gray-200 text-primary" : ""}`}
+          >
             {index + 1}
           </Button>
         ))}
@@ -88,28 +92,29 @@ const Article = () => {
   return (
     <>
       <div className="container px-4 py-8 mx-auto">
-
-        <Typography tag="h1" color="green" className="text-3xl font-bold mb-4 text-center">
-          Article Page
-        </Typography>
-        <div className="relative flex w-full justify-center my-5">
-          <Input
-            type="text"
-            color="green"
-            value={inputValue}
-            onChange={handleInputChange}
-            className="pr-20"
-            label="Search articles"
-            containerProps={{
-              className: "min-w-0",
-            }}
-          />
-          <Button size="sm" onClick={handleSearchClick} color={inputValue ? "green" : "blue-gray"} disabled={!inputValue} className="!absolute right-1 top-1 rounded">
-            SEARCH
-          </Button>
+        <div className="mx-20">
+          <Typography tag="h1" color="green" className="text-3xl font-bold mb-4 text-center">
+            Halaman Artikel
+          </Typography>
+          <div className="relative flex w-full justify-center my-5">
+            <Input
+              type="text"
+              color="green"
+              value={inputValue}
+              onChange={handleInputChange}
+              className="pr-20"
+              label="Search articles"
+              containerProps={{
+                className: "min-w-0",
+              }}
+            />
+            <Button size="sm" onClick={handleSearchClick} color={inputValue ? "green" : "blue-gray"} disabled={!inputValue} className="!absolute right-1 top-1 rounded">
+              SEARCH
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{listArticles}</div>
+          {renderPaginationButtons()}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{listArticles}</div>
-        {renderPaginationButtons()}
       </div>
     </>
   );
