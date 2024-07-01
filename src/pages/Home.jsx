@@ -57,7 +57,7 @@ const Home = () => {
       <div key={divisions.id} className="bg-white rounded-lg overflow-hidden">
         <div className="p-6">
           <h3 className="text-xl font-bold text-primary">{divisions.name}</h3>
-          <p className="text-blue-gray-500">{divisions.description}</p>
+          <p className="text-blue-gray-500 text-sm pt-2 h-28">{divisions.descriptions}</p>
         </div>
       </div>
     );
