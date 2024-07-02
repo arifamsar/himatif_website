@@ -1,5 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -13,7 +14,7 @@ export default function Footer() {
           <ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
             <li>
               <Typography as="a" href="#" color="white" className="font-normal transition-colors hover:text-green-500 focus:text-green-500">
-                Tentang kami
+                <Link to="/profile">Tentang kami</Link>
               </Typography>
             </li>
             <li>
