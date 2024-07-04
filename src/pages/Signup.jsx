@@ -1,15 +1,15 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../App";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../services/FirebaseConfig";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import bcrypt from "bcryptjs"; // Import bcryptjs
 
-function Login() {
+function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { login } = useContext(AuthContext);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -30,48 +30,47 @@ function Login() {
     }
 
     try {
-      // Query Firestore for the user with the given username
+      // Check if username already exists
       const q = query(collection(db, "users"), where("username", "==", username));
       const querySnapshot = await getDocs(q);
-
+      
       if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        const userData = userDoc.data();
-        const hashedPassword = userData.password;
-
-        // Compare the hashed password with the input password
-        const passwordMatch = await bcrypt.compare(password, hashedPassword);
-
-        if (passwordMatch) {
-          // If passwords match, login user
-          login({ id: userDoc.id, ...userData });
-          navigate("/admin");
-        } else {
-          // If passwords do not match, show error
-          setErrors({ login: "Invalid username or password!" });
-        }
-      } else {
-        // If user not found, show error
-        setErrors({ login: "Invalid username or password!" });
+        setErrors({ signup: "Account already created!" });
+        return;
       }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+
+      // Save user data to Firestore with hashed password
+      await addDoc(collection(db, "users"), {
+        username,
+        password: hashedPassword
+      });
+
+      setSuccessMessage("Account successfully registered!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
-      setErrors({ login: "Failed to login!" });
+      setErrors({ signup: "Failed to create an account!" });
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <button onClick={() => navigate(-1)} style={{ position: "absolute", top: 0, left: 0 }}>
+        <ArrowLeftIcon className="h-8 w-8 text-gray-500 m-5 hover:text-green-500" />
+      </button>
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
+              <label htmlFor="username" className="sr-only">Username</label>
               <input
                 id="username"
                 name="username"
@@ -84,9 +83,7 @@ function Login() {
               {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
+              <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
                 name="password"
@@ -99,20 +96,12 @@ function Login() {
               {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
             </div>
           </div>
-          {errors.login && <p className="text-red-500 text-xs italic">{errors.login}</p>}
+          {errors.signup && <p className="text-red-500 text-xs italic">{errors.signup}</p>}
+          {successMessage && <p className="text-green-500 text-xs italic">{successMessage}</p>}
           <div>
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              Sign in
-            </button>
-          </div>
-          <div>
-            <button
-              type="button" // This should not submit the form
-              onClick={() => navigate("/signup")} // Assuming '/signup' is your signup route
-              className="mt-2 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Sign Up
             </button>
@@ -123,4 +112,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
