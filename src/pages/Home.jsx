@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Carousel } from "@material-tailwind/react";
 import logo from "../assets/logo.svg";
-import { articles } from "../data/articles";
 import { coreteams } from "../data/coreteams";
 import { divisions } from "../data/divisions";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
@@ -10,10 +9,13 @@ import "swiper/css"; // Import Swiper styles
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules"; // Import required modules
+import { db } from "../services/FirebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 const Home = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentPage] = useState(1);
+  const [articles, setArticles] = useState([]);
   const articlesPerPage = 3;
 
   useEffect(() => {
@@ -23,8 +25,30 @@ const Home = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const articlesCollection = collection(db, "posts");
+      const snapshot = await getDocs(articlesCollection);
+      const articlesData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt.toDate(),
+      }));
+      setArticles(articlesData);
+    };
+
+    fetchArticles();
+  }, []);
+
+  const truncateText = (text, limit) => {
+    if (text.length <= limit) {
+      return text;
+    }
+    return text.substring(0, limit) + "...";
+  };
+
   const sortedArticles = articles.sort((a, b) => {
-    return new Date(b.dateAdded) - new Date(a.dateAdded);
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
   const indexOfLastArticle = currentPage * articlesPerPage;
@@ -64,16 +88,16 @@ const Home = () => {
   });
 
   const listArticles = currentArticles.map((article) => {
-    const date = new Date(article.dateAdded);
+    const date = new Date(article.createdAt);
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const formattedDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear().toString().substring(-2)}`;
 
     return (
-      <div key={article.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src={article.image} alt={article.title} className="w-full h-48 object-cover" />
-        <div className="p-6">
+      <div key={article.id} className="bg-white shadow-lg rounded-lg overflow-hidden h-[450px] flex flex-col">
+        <img src={article.imageUrl} alt={article.title} className="w-full h-52 object-cover" />
+        <div className="p-6 flex flex-col flex-grow">
           <h3 className="text-xl font-bold text-primary">{article.title}</h3>
-          <p className="text-blue-gray-500 mt-2">{article.description}</p>
+          <div className="text-blue-gray-500 mt-2 flex-grow" dangerouslySetInnerHTML={{ __html: truncateText(article.description, 150) }}></div>
           <div className="flex justify-between mt-4">
             <div className="flex items-center">
               <UserCircleIcon className="w-8 h-8 text-blue-gray-500" />
