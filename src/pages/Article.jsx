@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { articles } from "../data/articles";
+import { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../services/FirebaseConfig";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,23 @@ import { useNavigate } from "react-router-dom";
 const Article = () => {
   const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const articlesCollection = collection(db, "posts");
+      const snapshot = await getDocs(articlesCollection);
+      const articlesData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt.toDate(),
+      }));
+      setArticles(articlesData);
+    };
+
+    fetchArticles();
+  }, []);
 
   const handleReadMore = (id) => {
     console.log(id);
@@ -22,13 +39,20 @@ const Article = () => {
     setSearchTerm(inputValue);
   };
 
+  const truncateText = (text, limit) => {
+    if (text.length <= limit) {
+      return text;
+    }
+    return text.substring(0, limit) + "...";
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
 
   const totalPages = Math.ceil(articles.length / articlesPerPage);
 
   const sortedArticles = articles.sort((a, b) => {
-    return new Date(b.dateAdded) - new Date(a.dateAdded);
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
   const indexOfLastArticle = currentPage * articlesPerPage;
@@ -61,20 +85,19 @@ const Article = () => {
   };
 
   const listArticles = filteredArticles.map((article) => {
-    const date = new Date(article.dateAdded);
+    const date = new Date(article.createdAt);
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const formattedDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear().toString().substring(-2)}`;
 
     return (
-      <div key={article.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src={article.image} alt={article.title} className="w-full h-48 object-cover" />
-        <div className="p-6">
+      <div key={article.id} className="bg-white shadow-lg rounded-lg overflow-hidden h-[500px] flex flex-col">
+        <img src={article.imageUrl} alt={article.title} className="w-full h-52 object-cover" />
+        <div className="p-6 flex flex-col flex-grow">
           <h3 className="text-xl font-bold text-primary">{article.title}</h3>
-          <p className="text-blue-gray-500 mt-2">{article.description}</p>
-
+          <div className="text-blue-gray-500 mt-2 flex-grow" dangerouslySetInnerHTML={{ __html: truncateText(article.description, 150) }}></div>
           <div className="flex justify-start mt-4">
             <Button size="sm" color="green" onClick={() => handleReadMore(article.id)}>
-              READ MORE
+              Selengkapnya
             </Button>
           </div>
           <div className="flex justify-between mt-4">
@@ -92,7 +115,7 @@ const Article = () => {
   return (
     <>
       <div className="container px-4 py-8 mx-auto">
-        <div className="mx-20">
+        <div className="mx-3 lg:mx-20">
           <Typography tag="h1" color="green" className="text-3xl font-bold mb-4 text-center">
             Halaman Artikel
           </Typography>
