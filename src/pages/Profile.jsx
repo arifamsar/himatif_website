@@ -6,7 +6,7 @@ const Profile = () => {
       <div className="container mx-auto mt-12">
         <h1 className="text-center font-bold text-3xl text-green-600">Profil Himpunan Mahasiswa Teknik Informatika</h1>
 
-        <div className="flex flex-col items-center justify-center gap-8 mt-12 mx-20">
+        <div className="flex flex-col items-center justify-center gap-8 mt-12 mx-3 lg:mx-20">
           <img src={logo} alt="logo-ct" className="w-48" />
           <h1 className="text-3xl font-extrabold text-center text-primary">HIMATIF UIR</h1>
           <p className="text-center text-blue-gray-500 font-bold">
@@ -14,7 +14,7 @@ const Profile = () => {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 my-8 mx-20">
+        <div className="flex flex-col lg:flex-row gap-8 my-8 mx-3 lg:mx-20 text-center">
           <div className="w-full lg:w-1/2">
             <h2 className="text-2xl font-bold text-green-600">Visi</h2>
             <p className="text-blue-gray-500">Menjadi himpunan mahasiswa teknik informatika yang unggul dalam bidang teknologi informasi dan mampu memberikan kontribusi positif bagi masyarakat.</p>
