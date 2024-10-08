@@ -7,6 +7,8 @@ import Resizer from "react-image-file-resizer";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Include the Quill stylesheet
 import Dashboard from "../components/AdminDashboard";
+import { getAuth, signOut } from "firebase/auth/web-extension";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const [title, setTitle] = useState("");
@@ -15,6 +17,7 @@ function Admin() {
   const [message, setMessage] = useState("");
   const [showPopup, setShowPopup] = useState(false); // Popup state
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -41,6 +44,14 @@ function Admin() {
   const handleUpload = async () => {
     if (!title.trim() || !description.trim() || !image) {
       setMessage("Please fill in all fields and select an image.");
+      return;
+    }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      setMessage("Please login to upload an article.");
       return;
     }
 
@@ -77,9 +88,20 @@ function Admin() {
     );
   };
 
+  const handleLogout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
   return (
     <div className="mx-auto container flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="mx-32 w-full space-y-8">
+      <div className="mx-8 lg:mx-32 w-full space-y-8">
         <div>
           <h2 className="mt-6 text-3xl font-extrabold text-green-800">Upload new article</h2>
         </div>
@@ -130,6 +152,14 @@ function Admin() {
           {message && <p className="text-green-500 text-xs italic">{message}</p>}
         </form>
         <Dashboard />
+
+        <button
+          type="button"
+          className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
 
         {showPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
