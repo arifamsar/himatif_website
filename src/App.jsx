@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 import DetailArticle from "./pages/DetailArticle";
 import Admin from "./pages/Admin";
 import Gallery from "./pages/Gallery";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import ScrollToTop from "./components/scrollToTop";
 
 export const AuthContext = createContext();
@@ -27,10 +27,19 @@ function App() {
   const logout = () => {
     setIsAuthenticated(false);
     setCurrentUser(null);
+    localStorage.removeItem("user");
   };
 
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      login(user);
+    }
+  }, []);
+
   // Check if the current route is login or admin
-  const isLoginOrAdmin = location.pathname === "/login" || location.pathname === "/admin" || location.pathname === "/signup";
+  const isLoginOrAdmin = location.pathname === "/login" || location.pathname === "/signup" || (location.pathname === "/admin" && !isAuthenticated);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, currentUser }}>
@@ -41,7 +50,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/article" element={<Article />} />
         <Route path="/article/:id" element={<DetailArticle />} />
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/admin" /> : <Login />} />
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
         <Route path="/admin" element={isAuthenticated ? <Admin /> : <Navigate to="/login" />} />
         <Route path="/gallery" element={<Gallery />} />
