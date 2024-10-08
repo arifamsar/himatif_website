@@ -1,51 +1,58 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "../services/FirebaseConfig";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import bcrypt from "bcryptjs"; // Import bcryptjs
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth/web-extension";
 
 function Signup() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
     const newErrors = {};
+    setErrors({});
 
+    // Basic validation for empty fields
     if (!username) {
-      newErrors.username = "Username is required!";
+      newErrors.username = "Username is required";
     }
-
+    if (!email) {
+      newErrors.email = "Email is required";
+    }
     if (!password) {
-      newErrors.password = "Password is required!";
+      newErrors.password = "Password is required";
     }
 
+    // Password at least 8 char
+    if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
+
+    // If there are validation errors, set them and return early
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
     try {
-      // Check if username already exists
-      const q = query(collection(db, "users"), where("username", "==", username));
-      const querySnapshot = await getDocs(q);
-      
-      if (!querySnapshot.empty) {
-        setErrors({ signup: "Account already created!" });
-        return;
-      }
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
 
-      // Save user data to Firestore with hashed password
       await addDoc(collection(db, "users"), {
+        uid: user.uid,
         username,
-        password: hashedPassword
+        email,
+        password: hashedPassword,
       });
 
       setSuccessMessage("Account successfully registered!");
@@ -53,7 +60,8 @@ function Signup() {
         navigate("/login");
       }, 2000);
     } catch (error) {
-      setErrors({ signup: "Failed to create an account!" });
+      setErrors({ signup: "Failed to create account!" });
+      console.error(error);
     }
   };
 
@@ -66,11 +74,13 @@ function Signup() {
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSignup}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="username" className="sr-only">Username</label>
+              <label htmlFor="username" className="sr-only">
+                Username
+              </label>
               <input
                 id="username"
                 name="username"
@@ -82,8 +92,23 @@ function Signup() {
               />
               {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
             </div>
+
             <div>
-              <label htmlFor="password" className="sr-only">Password</label>
+              <input
+                type="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
               <input
                 id="password"
                 name="password"
