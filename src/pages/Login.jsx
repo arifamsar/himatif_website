@@ -12,9 +12,10 @@ function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     const newErrors = {};
+    setErrors({});
 
     if (!username) {
       newErrors.username = "Username is required!";
@@ -45,10 +46,11 @@ function Login() {
         if (passwordMatch) {
           // If passwords match, login user
           login({ id: userDoc.id, ...userData });
+          localStorage.setItem("user", JSON.stringify({ id: userDoc.id, ...userData }));
           navigate("/admin");
         } else {
           // If passwords do not match, show error
-          setErrors({ login: "Invalid username or password!" });
+          setErrors({ login: "Invalid password!" });
         }
       } else {
         // If user not found, show error
@@ -56,6 +58,7 @@ function Login() {
       }
     } catch (error) {
       setErrors({ login: "Failed to login!" });
+      console.log("Error logging in: ", error);
     }
   };
 
@@ -65,7 +68,7 @@ function Login() {
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
